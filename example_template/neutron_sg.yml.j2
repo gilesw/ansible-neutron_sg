@@ -1,0 +1,97 @@
+#jinja2: lstrip_blocks: "True"
+heat_template_version: 2015-10-15
+
+description: |
+  security groups
+
+resources:
+
+  security_group_web_public:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      name: web-public
+      description: allow public access to a server e.g a load balancer
+      rules:
+      - protocol: icmp
+      - protocol: tcp
+        port_range_min: 80
+        port_range_max: 80
+      - protocol: tcp
+        port_range_min: 443
+        port_range_max: 443
+
+  security_group_mgmt-allports-public:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      name: mgmt-allports-public
+      description: example firewall override
+      rules:
+      - protocol: icmp
+{% for key, value in neutron_sg_example_mgmt_public_ips.items()|sort %}
+      - protocol: tcp
+        port_range_min: 0
+        port_range_max: 65535
+        remote_ip_prefix: {{ value.ip }} # {{ value.comment }}
+{% endfor %}
+
+  security_group_servnet-allports-private:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      name: servnet-allports-private
+      description:
+      rules:
+      - protocol: icmp
+
+      # full servnet networks
+      - protocol: tcp
+        remote_ip_prefix: 10.176.0.0/12
+
+      - protocol: tcp
+        remote_ip_prefix: 10.208.0.0/12
+
+      - protocol: udp
+        remote_ip_prefix: 10.176.0.0/12
+
+      - protocol: udp
+        remote_ip_prefix: 10.208.0.0/12
+
+
+  security_group_servnet-clb-private:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      name: servnet-clb-private
+      description: servnet rules only allowing traffic from the clbs
+      rules:
+      - protocol: icmp
+
+      - protocol: tcp
+        remote_ip_prefix: 10.183.248.0/24
+
+      - protocol: tcp
+        remote_ip_prefix: 10.189.254.0/23
+
+      - protocol: tcp
+        remote_ip_prefix: 10.183.250.0/23
+
+      - protocol: tcp
+        remote_ip_prefix: 10.187.186.0/23
+
+      - protocol: tcp
+        remote_ip_prefix: 10.187.187.0/26
+
+      ########
+      - protocol: udp
+        remote_ip_prefix: 10.183.248.0/24
+
+      - protocol: udp
+        remote_ip_prefix: 10.189.254.0/23
+
+      - protocol: udp
+        remote_ip_prefix: 10.183.250.0/23
+
+      - protocol: udp
+        remote_ip_prefix: 10.187.186.0/23
+
+      - protocol: udp
+        remote_ip_prefix: 10.187.187.0/26
+

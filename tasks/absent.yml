@@ -1,0 +1,22 @@
+- name: delete template if we absent the stack and facts
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ neutron_sg_template }}"
+  ignore_errors: true
+
+- name: destroy os_stack
+  os_stack:
+    auth:
+      tenant_id: "{{ neutron_sg_tenant_id }}"
+      username: "{{ neutron_sg_username }}"
+      password: "{{ neutron_sg_password }}"
+      auth_url: "{{ neutron_sg_auth_url }}"
+    name: "{{ neutron_sg_stack_name }}"
+    state: "{{ neutron_sg_state }}"
+    template: "{{ neutron_sg_template }}"
+    parameters: "{{ neutron_sg_parameters }}"
+  loop_control:
+    label: "{{ neutron_sg_template }}"
+

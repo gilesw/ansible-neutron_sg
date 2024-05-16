@@ -1,0 +1,17 @@
+neutron_sg_state: "{{ state | default('present') }}"
+neutron_sg_tenant_id: "{{ os_stack_tenant_id | default('wibble') }}"
+neutron_sg_username: "{{ os_stack_username | default('wibble') }}"
+neutron_sg_password: "{{ os_stack_password | default('wibble') }}"
+neutron_sg_auth_url: "https://identity.api.rackspacecloud.com/v2.0/"
+neutron_sg_stack_name: "product-sg-label"
+
+neutron_sg_parameters: "{{ omit }}"
+neutron_sg_template: "{{ inventory_dir }}/.files/neutron_sg/built/{{ neutron_sg_stack_name }}.yml"
+neutron_sg_state_file: "{{ inventory_dir }}/.files/neutron_sg/state/{{ neutron_sg_stack_name }}.yml"
+neutron_sg_source_template: "neutron_sg.yml.j2"
+
+neutron_sg_example_mgmt_public_ips:
+  wibble:
+    ip: 1.1.1.1/32
+    comment: Wibble
+

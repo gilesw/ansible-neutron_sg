@@ -1,0 +1,17 @@
+galaxy_info:
+  author: Giles Westwood
+  description: An Ansible role to setup Rackspace specific neutron security group firewalls
+
+  license: MIT
+
+  min_ansible_version: 1.2
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+
+  galaxy_tags:
+    - system
+
+dependencies: []

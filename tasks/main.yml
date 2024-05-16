@@ -1,0 +1,6 @@
+- include: create.yml
+  when: neutron_sg_state == 'present'
+
+- include: absent.yml
+  when: neutron_sg_state == 'absent'
+
