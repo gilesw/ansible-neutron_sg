@@ -8,7 +8,6 @@
   shell: "heat stack-list | grep -q {{ neutron_sg_stack_name }}"
   ignore_errors: true
   environment:
-    PATH: "{{ shelltools_path }}"
     OS_USERNAME: "{{ neutron_sg_username }}"
     OS_PASSWORD: "{{ neutron_sg_password }}"
     OS_TENANT_ID: "{{ neutron_sg_tenant_id }}"
@@ -22,7 +21,6 @@
 - name: "dry run an update stack to see if anything needs to change be updated"
   shell: "heat stack-update {{ neutron_sg_stack_name }} --template-file {{ neutron_sg_template }} --dry-run > {{ neutron_sg_state_file }}"
   environment:
-    PATH: "{{ shelltools_path }}"
     OS_USERNAME: "{{ neutron_sg_username }}"
     OS_PASSWORD: "{{ neutron_sg_password }}"
     OS_TENANT_ID: "{{ neutron_sg_tenant_id }}"
